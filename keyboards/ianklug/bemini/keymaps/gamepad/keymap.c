@@ -114,12 +114,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
-/* set player state from eeprom on boot */
 void matrix_init_user(void) {
-    eeconfig_read_default_layer();
-    if (biton32(default_layer_state) == STANDARD_P2) {
-	is_player_two = 1;
-    }
+    layer_move(NINEKEY_P1);
 }
 
 /* manage encoder hold/release behavior (bms, keyboard modes)
@@ -425,14 +421,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
      * switch player mode when middle two black keys + e keys are pressed
      */
     if (mode_swap == 3) {
-	/* save default player mode to eeprom */
 	if (mode_swap_p2 == 2) {
 	    is_player_two ^= 1;
 	    if (is_player_two) {
-		set_single_persistent_default_layer(STANDARD_P2);
 		layer_move(STANDARD_P2);
 	    } else {
-		set_single_persistent_default_layer(STANDARD_P1);
 		layer_move(STANDARD_P1);
 	    }
 	}
